@@ -1,0 +1,18 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "nautilus-dinger"
+version = "0.1.0"
+description = "Paradex trading adapter for Nautilus Trader"
+requires-python = ">=3.10"
+dependencies = [
+    "nautilus_trader",
+    "aiohttp",
+    "pydantic",
+]
+
+[tool.maturin]
+python-source = "."
+module-name = "paradex_adapter"
