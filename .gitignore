@@ -66,3 +66,33 @@ test_data/
 *_private_key*
 *credentials*
 *secrets*
+
+# Build artifacts
+*.so
+*.pyc
+__pycache__/
+.pytest_cache/
+target/
+Cargo.lock
+
+# Virtual environment
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Outputs
+*.log
+*_output.txt
+
+# System
+.DS_Store
+.sisyphus/

@@ -1,7 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-01-29 14:38 UTC
-**Commit:** N/A
+**Generated:** 2026-01-29 14:54 UTC
 **Branch:** master
 
 ## OVERVIEW
@@ -10,8 +9,8 @@ Nautilus Paradex Adapter - Trading system connecting Nautilus Trader framework t
 ## STRUCTURE
 
 ```
-.
-├── crates/adapters/paradex/    # Rust core: auth, HTTP, WebSocket, STARK signing
+nautilus-dinger/
+├── crates/adapters/paradex/    # Rust core
 │   ├── src/
 │   │   ├── auth/               # JWT authentication
 │   │   ├── http/               # REST API client
@@ -20,26 +19,31 @@ Nautilus Paradex Adapter - Trading system connecting Nautilus Trader framework t
 │   │   ├── state/              # Reconciliation & state management
 │   │   ├── python/             # PyO3 bindings
 │   │   └── common/             # Shared types
-│   └── Cargo.toml              # Rust dependencies
+│   ├── tests/                  # Rust tests (auth, signing, integration)
+│   └── Cargo.toml
 ├── nautilus_trader/adapters/paradex/  # Python adapter layer
-│   ├── execution.py            # LiveExecutionClient (11 methods)
-│   ├── data.py                 # LiveMarketDataClient (8 methods)
-│   ├── providers.py            # InstrumentProvider (3 methods)
+│   ├── execution.py            # LiveExecutionClient
+│   ├── data.py                 # LiveMarketDataClient
+│   ├── providers.py            # InstrumentProvider
 │   ├── factories.py            # Type conversions
-│   ├── config.py               # Configuration classes
+│   ├── config.py               # Configuration
 │   ├── constants.py            # Constants
-│   └── _rust.py                # Rust Python wrapper
+│   └── _rust.py                # Rust wrapper
+├── scripts/                    # Organized scripts
+│   ├── trading/                # Trading bots (7 scripts)
+│   ├── monitoring/             # Dashboards (7 scripts)
+│   └── utils/                  # Testing utilities (6 scripts)
 ├── tests/                      # Test suite
-│   ├── python/integration/     # Integration tests
-│   └── mocks/                  # Test fixtures
-├── memory-bank/paradex/        # Documentation & reference
-└── [*.py scripts]             # Trading bot scripts (root level)
-    ├── live_trader.py         # Main trading bot
-    ├── place_order.py         # Order placement
-    ├── check_account.py       # Account checks
-    └── monitoring_dashboard.py # Dashboard
-    ├── tracking/               # Progress tracking
-    └── archive/                # Historical docs
+│   ├── python/
+│   │   ├── integration/        # Integration tests
+│   │   ├── performance/        # Performance tests
+│   │   └── unit/              # Unit tests
+│   └── mocks/                  # Mock servers
+├── examples/                   # Usage examples
+│   └── order_placement/        # Order placement examples
+├── config/                     # Configuration files
+├── docs/                       # Documentation
+└── memory-bank/                # Development notes
 ```
 
 ## WHERE TO LOOK
@@ -47,48 +51,55 @@ Nautilus Paradex Adapter - Trading system connecting Nautilus Trader framework t
 | Task | Location | Notes |
 |------|----------|-------|
 | **Rust Core** | | |
-| HTTP client | `crates/adapters/paradex/src/http/client.rs` | ParadexHttpClient with JWT auth |
-| WebSocket client | `crates/adapters/paradex/src/websocket/` | JSON-RPC, message handlers |
-| STARK signing | `crates/adapters/paradex/src/signing/signer.rs` | Order signing with lambdaworks |
-| Auth/JWT | `crates/adapters/paradex/src/auth/jwt.rs` | JWT token generation |
-| State management | `crates/adapters/paradex/src/state/` | Reconciliation, DashMap for concurrency |
+| HTTP client | `crates/adapters/paradex/src/http/client.rs` | REST API with JWT auth |
+| WebSocket | `crates/adapters/paradex/src/websocket/` | JSON-RPC client |
+| STARK signing | `crates/adapters/paradex/src/signing/signer.rs` | Order signing |
+| Auth/JWT | `crates/adapters/paradex/src/auth/jwt.rs` | JWT tokens |
+| State mgmt | `crates/adapters/paradex/src/state/` | Reconciliation |
+| PyO3 bindings | `crates/adapters/paradex/src/python/mod.rs` | Python interface |
 | **Python Adapter** | | |
-| Execution client | `nautilus_trader/adapters/paradex/execution.py` | LiveExecutionClient |
-| Market data client | `nautilus_trader/adapters/paradex/data.py` | LiveMarketDataClient |
-| Instrument provider | `nautilus_trader/adapters/paradex/providers.py` | ParadexInstrumentProvider |
-| Type conversions | `nautilus_trader/adapters/paradex/factories.py` | Parse instruments, orders, fills |
+| Execution | `nautilus_trader/adapters/paradex/execution.py` | Order execution |
+| Market data | `nautilus_trader/adapters/paradex/data.py` | Market data feed |
+| Instruments | `nautilus_trader/adapters/paradex/providers.py` | Instrument provider |
+| Factories | `nautilus_trader/adapters/paradex/factories.py` | Type conversions |
 | **Scripts** | | |
-| Trading bots | `scripts/trading/` | live_trader.py, place_order.py, etc. |
-| Monitoring | `scripts/monitoring/` | monitoring_dashboard.py, live_btc_price.py |
-| Utilities | `scripts/utils/` | Examples, performance tests |
-| **Documentation** | | |
-| Quick start | `README.md` | Setup guide |
-| Reference | `memory-bank/paradex/` | Implementation guides |
+| Trading | `scripts/trading/live_trader.py` | Main trading bot |
+| Monitoring | `scripts/monitoring/monitoring_dashboard.py` | Live dashboard |
+| Utils | `scripts/utils/rust_20_trades.py` | Performance test |
+| **Tests** | | |
+| Integration | `tests/python/integration/` | End-to-end tests |
+| Performance | `tests/python/performance/` | Stress tests |
+| Rust tests | `crates/adapters/paradex/tests/` | Rust unit tests |
+| **Examples** | | |
+| Orders | `examples/order_placement/` | Order examples |
 
 ## COMMANDS
 
 ```bash
-# Build Rust layer
-cd crates/adapters/paradex
-maturin develop
+# Build
+make dev              # Development build
+make build            # Release build
 
-# Run tests
-cd tests
-pytest
+# Test
+make test             # All tests
+make test-py          # Python tests only
+make test-rust        # Rust tests only
 
-# Run trading bot
+# Run
 python scripts/trading/live_trader.py
-
-# Check account
-python scripts/trading/check_account.py
-
-# Place order
-python scripts/trading/place_order.py
-
-# Monitor dashboard
 python scripts/monitoring/monitoring_dashboard.py
+
+# Clean
+make clean
 ```
+
+## KEY FILES
+
+- `Makefile` - Build automation
+- `pyproject.toml` - Python project config
+- `Cargo.toml` - Rust workspace config
+- `config/.env.testnet` - Testnet configuration
 
 ---
 
-**Last Updated:** 2026-01-29 14:38 UTC
+**Last Updated:** 2026-01-29 14:54 UTC
