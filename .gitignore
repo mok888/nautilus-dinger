@@ -1,0 +1,68 @@
+# Environment files with credentials
+.env
+.env.*
+.env.local
+.env.testnet
+.env.mainnet
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Backups
+*.backup
+*.bak
+
+# Test data
+test_data/
+*.db
+*.sqlite
+
+# Credentials (extra safety)
+*_private_key*
+*credentials*
+*secrets*

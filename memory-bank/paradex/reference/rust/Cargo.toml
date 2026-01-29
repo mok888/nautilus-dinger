@@ -1,0 +1,54 @@
+[package]
+name = "paradex-adapter"
+version = "4.0.0"
+edition = "2021"
+rust-version = "1.75"
+
+[lib]
+name = "paradex_adapter"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Nautilus core (adjust paths to your installation)
+nautilus-core = { path = "../../../nautilus_core/core" }
+nautilus-model = { path = "../../../nautilus_core/model" }
+nautilus-network = { path = "../../../nautilus_core/network" }
+nautilus-execution = { path = "../../../nautilus_core/execution" }
+nautilus-common = { path = "../../../nautilus_core/common" }
+
+# Python bindings
+pyo3 = { version = "0.20", features = ["extension-module"] }
+pyo3-asyncio = { version = "0.20", features = ["tokio-runtime"] }
+
+# StarkNet crypto
+starknet = "0.11"
+starknet-crypto = "0.7"
+starknet-signers = "0.11"
+
+# Async
+tokio = { version = "1.35", features = ["full"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Utilities
+ustr = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"
+parking_lot = "0.12"
+dashmap = "5.5"
+tracing = "0.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+axum = "0.7"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
